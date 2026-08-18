@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from .restapis import get_request, analyze_review_sentiments, post_review
-from .models import CarMake, CarModel
+from .models import CarModel
 
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate, logout
