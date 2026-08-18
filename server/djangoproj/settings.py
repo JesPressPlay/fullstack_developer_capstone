@@ -28,8 +28,12 @@ SECRET_KEY =\
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','https://jdandrea808-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai']
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000','https://jdandrea808-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'https://jdandrea808-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000',
+                        'https://jdandrea808-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
@@ -61,7 +65,7 @@ ROOT_URLCONF = 'djangoproj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'frontend/static'),
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/static'),
                  os.path.join(BASE_DIR, 'frontend/build'),
                  os.path.join(BASE_DIR, 'frontend/build/static'),
                  ],
@@ -138,7 +142,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'frontend/static'),
+    os.path.join(BASE_DIR, 'frontend/static'),
     os.path.join(BASE_DIR, 'frontend/build'),
     os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
