@@ -6,6 +6,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from datetime import datetime
 from .restapis import get_request, analyze_review_sentiments, post_review
+from .models import CarMake, CarModel
 
 
 from django.http import JsonResponse
@@ -103,11 +104,11 @@ def get_dealer_reviews(request, dealer_id):
         for review_detail in reviews:
             response = analyze_review_sentiments(review_detail['review'])
             print(response)
-            review_detail['sentiment'] = response['sentiment']
+            review_detail['sentiment'] = response['sentiment'] if response else "neutral"
         return JsonResponse({"status":200,"reviews":reviews})
     else:
         return JsonResponse({"status":400,"message":"Bad Request"})
-
+    
 def add_review(request):
     if(request.user.is_anonymous == False):
         data = json.loads(request.body)
@@ -119,3 +120,13 @@ def add_review(request):
     else:
         return JsonResponse({"status":403,"message":"Unauthorized"})
 
+def get_cars(request):
+    count = CarMake.objects.filter().count()
+    print(count)
+    if(count == 0):
+        initiate()
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+    for car_model in car_models:
+        cars.append({"CarModel": car_model.name, "CarMake": car_model.car_make.name})
+    return JsonResponse({"CarModels":cars})
