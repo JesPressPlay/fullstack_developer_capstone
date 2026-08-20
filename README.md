@@ -1,12 +1,12 @@
 # Best Car Dealership
 
-A full-stack car dealership review platform where users can browse dealerships, read customer reviews, and — once logged in — post their own reviews. Each review is automatically scored for sentiment (positive, neutral, or negative) by a sentiment-analysis microservice.
+Hello! Welcome to my capstone project - a car dealership review platform where users can browse dealerships, read customer reviews, and (once logged in) post their own reviews. Each review is automatically scored for sentiment (positive, neutral, or negative) by a sentiment-analysis microservice.
 
-This project was built as the capstone for the IBM Full Stack Software Developer Professional Certificate. It combines a React frontend, a Django backend acting as an API gateway, a Node.js/Express + MongoDB microservice, and a serverless sentiment analyzer — all containerized and deployable to Kubernetes.
+This project was built as the capstone for the IBM Full Stack Software Developer Professional Certificate. It combines a React frontend, a Django backend acting as an API gateway, a Node.js/Express + MongoDB microservice, and a serverless sentiment analyzer. All containerized and deployable to Kubernetes.
 
 ## Architecture
 
-The app is made up of several services that each own a piece of the system, with Django as the hub the user actually talks to:
+The app's made up of several services that each own a piece of the system, with Django as the hub the user actually talks to:
 
 ```
                     ┌─────────────────────────────┐
@@ -52,7 +52,7 @@ Clone the repo, then set up each piece. The services can run independently, but 
 
 ### 1. Django backend
 
-The Django app is the hub — set it up first.
+The Django app is the hub — set this up first.
 
 ```bash
 cd server
@@ -93,7 +93,7 @@ The entry file is `app.js`, and it exposes endpoints like `/fetchDealers`, `/fet
 
 ### 4. Sentiment analyzer
 
-A separate microservice (NLTK-based) deployed on IBM Code Engine. The Django app reaches it via an environment variable — it is not hardcoded.
+A separate microservice deployed on IBM Code Engine. The Django app reaches it via an environment variable, not hardcoded.
 
 The deployment source lives in `server/djangoapp/microservices` (a `sentiment_analyzer.py` and a `Dockerfile`). Build, push, and deploy it to Code Engine, then note the resulting URL for the environment configuration below.
 
@@ -105,11 +105,6 @@ The Django app reads two service URLs from `server/djangoapp/.env`:
 backend_url=<your Express/Mongo microservice URL>
 sentiment_analyzer_url=<your Code Engine sentiment analyzer URL>
 ```
-
-Two things to get right, because they behave differently:
-
-- **`backend_url` — no trailing slash.** Endpoints are appended directly (e.g. `backend_url + "/fetchDealers"`), so a trailing slash produces a broken `//fetchDealers`.
-- **`sentiment_analyzer_url` — must include a trailing slash.** The request is built as `sentiment_analyzer_url + "analyze/" + text`, so the slash is required.
 
 > **Cloning this repo?** The committed `.env` points at the original author's deployed services, which won't be reachable for you. Update both `backend_url` and `sentiment_analyzer_url` to point at your own running microservice and deployed analyzer.
 
@@ -127,9 +122,9 @@ kubectl apply -f deployment.yaml
 kubectl port-forward deployment.apps/dealership 8000:8000
 ```
 
-The `Dockerfile` runs the app with **gunicorn** (a production WSGI server) rather than the Django dev server, and `entrypoint.sh` runs migrations and `collectstatic` on container startup. `deployment.yaml` defines the Kubernetes deployment — update the image path to your own namespace before applying.
+The `Dockerfile` runs the app with **gunicorn** (a production WSGI server) rather than the Django dev server, and `entrypoint.sh` runs migrations and `collectstatic` on container startup. `deployment.yaml` defines the Kubernetes deployment. Make sure to update the image path to your own namespace before applying.
 
-> **Note:** the container starts with a fresh database, so you'll need to create a superuser and seed car make/model data inside the running pod (the dealer and review data comes from the external Mongo service and is unaffected).
+> **Note:** the container starts with a fresh database, so you'll need to create a superuser and create your own car make/model data inside the running pod (the dealer and review data comes from the external Mongo service and is unaffected).
 
 ## CI/CD
 
@@ -138,3 +133,5 @@ A GitHub Actions workflow (`.github/workflows/main.yml`) automatically lints all
 ## Credit
 
 This project was built on a skeleton provided by IBM / Skills Network as part of the Full Stack Software Developer Professional Certificate capstone.
+
+Thanks again for checking out my project! ^.^
